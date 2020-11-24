@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import Root from './scenes/Root';
+import Dashboard from './scenes/Dashboard';
 
 const container = document.getElementById('container');
 
 if (container) {
   render(
     <React.StrictMode>
-      <Root />
+      <Dashboard />
     </React.StrictMode>,
     container,
   );
