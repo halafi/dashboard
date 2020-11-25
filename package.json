@@ -30,6 +30,7 @@
     "react": "^17.0.1",
     "react-datepicker": "^3.3.0",
     "react-dom": "^17.0.1",
+    "recharts": "^1.8.5",
     "regenerator-runtime": "^0.13.7",
     "tailwindcss": "^2.0.1"
   },
@@ -48,6 +49,7 @@
     "@types/react": "^17.0.0",
     "@types/react-datepicker": "^3.1.1",
     "@types/react-dom": "^17.0.0",
+    "@types/recharts": "^1.8.16",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
     "babel-eslint": "^10.1.0",

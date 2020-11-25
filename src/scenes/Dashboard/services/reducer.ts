@@ -5,6 +5,7 @@ const SET_END_DATE = 'SET_END_DATE';
 const SET_ERROR = 'SET_ERROR';
 const SET_DATA = 'SET_DATA';
 const SET_TAB_INDEX = 'SET_TAB_INDEX';
+// const SET_LOADING = 'SET_LOADING';
 
 // TODO: move to global types
 type Nullable<T> = T | null;
@@ -44,6 +45,13 @@ type SetTabIndexAction = {
   };
 };
 
+// type SetLoadingAction = {
+//   type: typeof SET_LOADING;
+//   payload: {
+//     loading: boolean;
+//   };
+// };
+
 export const setStartDate = (date: Nullable<Date>): SetStartDateAction => ({
   type: SET_START_DATE,
   payload: {
@@ -65,7 +73,6 @@ export const setError = (error: string): SetErrorAction => ({
   },
 });
 
-// TODO: type
 export const setData = (data: MetricValues[]): SetDataAction => ({
   type: SET_DATA,
   payload: {
@@ -80,12 +87,20 @@ export const setTabIndex = (index: number): SetTabIndexAction => ({
   },
 });
 
+// export const setLoading = (loading: boolean): SetLoadingAction => ({
+//   type: SET_LOADING,
+//   payload: {
+//     loading,
+//   },
+// });
+
 export type DashboardActions =
   | SetStartDateAction
   | SetEndDateAction
   | SetErrorAction
   | SetTabIndexAction
   | SetDataAction;
+// | SetLoadingAction;
 
 export type State = {
   startDate: Nullable<Date>;
@@ -93,20 +108,32 @@ export type State = {
   error: Nullable<string>;
   data: MetricValues[];
   tabIndex: number;
+  loading: boolean;
 };
 
 const minesweeperReducer = (oldState: State, action: DashboardActions): State => {
   switch (action.type) {
     case SET_START_DATE:
-      return { ...oldState, startDate: action.payload.date };
+      return {
+        ...oldState,
+        startDate: action.payload.date,
+        loading: action.payload.date !== null,
+        error: null,
+      };
     case SET_END_DATE:
-      return { ...oldState, endDate: action.payload.date };
+      return {
+        ...oldState,
+        endDate: action.payload.date,
+        loading: action.payload.date !== null,
+        error: null,
+      };
     case SET_ERROR:
-      return { ...oldState, error: action.payload.error };
+      return { ...oldState, error: action.payload.error, loading: false };
     case SET_DATA:
-      return { ...oldState, data: action.payload.data };
+      return { ...oldState, data: action.payload.data, loading: false, error: null };
     case SET_TAB_INDEX:
       return { ...oldState, tabIndex: action.payload.index };
+    // case SET_LOADING: return { ...oldState, loading: action.payload.loading };
     default:
       throw new Error();
   }
