@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 type Props = {
   startDate: Nullable<Date>;
   endDate: Nullable<Date>;
+  today: Date;
   disabled: boolean;
   onChangeStartDate: (d: Date) => void;
   onChangeEndDate: (d: Date) => void;
@@ -13,6 +14,7 @@ type Props = {
 const DateRangePicker = ({
   startDate,
   endDate,
+  today,
   disabled,
   onChangeStartDate,
   onChangeEndDate,
@@ -38,6 +40,7 @@ const DateRangePicker = ({
       startDate={startDate}
       endDate={endDate}
       minDate={startDate}
+      maxDate={today}
       disabled={disabled}
     />
   </div>

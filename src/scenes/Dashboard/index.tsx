@@ -45,6 +45,7 @@ const Dashboard = () => {
       <DateRangePicker
         startDate={startDate}
         endDate={endDate}
+        today={today}
         disabled={loading}
         onChangeStartDate={(date) => dispatch(setStartDate(date as Date))}
         onChangeEndDate={(date) => dispatch(setEndDate(date as Date))}
