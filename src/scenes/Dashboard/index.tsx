@@ -13,23 +13,17 @@ import dashboardReducer, {
 } from './services/reducer';
 
 import 'react-datepicker/dist/react-datepicker.css';
-
-const API = 'https://api.athenian.co/v1/metrics/prs';
-const REPOSITORIES = [
-  'github.com/athenianco/athenian-api',
-  'github.com/athenianco/athenian-webapp',
-  'github.com/athenianco/infrastructure',
-  'github.com/athenianco/metadata',
-];
+import { fetchPrMetrics } from './services/api';
+import Spinner from '../../components/Spinner';
 
 const today = new Date();
 
 const Dashboard = () => {
   const [state, dispatch] = useReducer<Reducer<State, DashboardActions>>(dashboardReducer, {
-    startDate: subMonths(today, 6),
+    startDate: subMonths(today, 3),
     endDate: today,
     error: null,
-    data: null,
+    data: [],
     tabIndex: 0,
   });
   const { startDate, endDate, error, data, tabIndex } = state;
@@ -39,26 +33,7 @@ const Dashboard = () => {
       console.log(startDate);
       console.log(endDate);
       // pull request metrics
-      fetch(API, {
-        body: JSON.stringify({
-          for: [
-            {
-              repositories: REPOSITORIES,
-            },
-          ],
-          metrics: ['pr-review-time', 'pr-opened'],
-          date_from: formatISO(startDate, { representation: 'date' }),
-          date_to: formatISO(endDate, { representation: 'date' }),
-          granularities: ['day'],
-          exclude_inactive: true, // hardcoded - whether pull requests without events occurring in the date range provided should be excluded or not.
-          account: 1, // hardcoded
-          timezone: 60,
-        }),
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'omit',
-      })
-        .then((res) => res.json())
+      fetchPrMetrics(startDate, endDate)
         .then((json) => {
           console.log(json);
           dispatch(setData(json));
@@ -67,6 +42,7 @@ const Dashboard = () => {
     }
   }, [startDate, endDate]);
 
+  // TODO: memoization / re-renders
   // TODO: mobile responsivness
   return (
     <div className="h-screen flex flex-col">
@@ -123,7 +99,17 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="container mx-auto border rounded-md p-4 bg-white">
-        Some content in a border
+        {error}
+        {!data.length && (
+          <div className="flex justify-center my-24">
+            <Spinner size={24} />
+          </div>
+        )}
+        {data.map((d) => (
+          <div key={d.date}>
+            {d.date}: {d.values[0]}, {d.values[1]}
+          </div>
+        ))}
       </div>
     </div>
   );

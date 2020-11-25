@@ -1,3 +1,5 @@
+import type { MetricValues } from './api';
+
 const SET_START_DATE = 'SET_START_DATE';
 const SET_END_DATE = 'SET_END_DATE';
 const SET_ERROR = 'SET_ERROR';
@@ -31,7 +33,7 @@ type SetErrorAction = {
 type SetDataAction = {
   type: typeof SET_DATA;
   payload: {
-    data: any;
+    data: MetricValues[];
   };
 };
 
@@ -64,7 +66,7 @@ export const setError = (error: string): SetErrorAction => ({
 });
 
 // TODO: type
-export const setData = (data: any): SetDataAction => ({
+export const setData = (data: MetricValues[]): SetDataAction => ({
   type: SET_DATA,
   payload: {
     data,
@@ -89,7 +91,7 @@ export type State = {
   startDate: Nullable<Date>;
   endDate: Nullable<Date>;
   error: Nullable<string>;
-  data: Nullable<any>; // TODO: type
+  data: MetricValues[];
   tabIndex: number;
 };
 
