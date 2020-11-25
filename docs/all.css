@@ -669,6 +669,10 @@ video {
   height: 3rem;
 }
 
+.h-24 {
+  height: 6rem;
+}
+
 .h-screen {
   height: 100vh;
 }
@@ -795,6 +799,10 @@ video {
 .hover\:text-blue-500:hover {
   --tw-text-opacity: 1;
   color: rgba(59, 130, 246, var(--tw-text-opacity));
+}
+
+.w-24 {
+  width: 6rem;
 }
 
 .w-48 {

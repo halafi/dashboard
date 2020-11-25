@@ -2,6 +2,7 @@ import React from 'react';
 import './Spinner.css';
 
 type Props = {
+  // IMPORTANT: whiltelist classnames: h-24 w-24
   size?: number; // https://tailwindcss.com/docs/height && https://tailwindcss.com/docs/width
 };
 

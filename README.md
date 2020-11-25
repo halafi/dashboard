@@ -16,7 +16,7 @@ Install the dependencies...
 ...then start:
 
 ```bash
-  yarn start
+  yarn dev
 ```
 
 Navigate to [localhost:8080](http://localhost:8080). You should see your app running.
