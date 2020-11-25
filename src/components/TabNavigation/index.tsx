@@ -34,4 +34,4 @@ const TabNavigation = ({ items, onTabChange, tabIndex, disabled }: Props) => (
   </nav>
 );
 
-export default TabNavigation;
+export default React.memo(TabNavigation);

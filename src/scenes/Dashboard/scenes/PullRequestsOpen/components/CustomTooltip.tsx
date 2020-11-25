@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { formatHours, getRepositoryName } from '../../../../../services/utils';
+import { getRepositoryName } from '../../../../../services/utils';
 
 type Props = {
   active: boolean;

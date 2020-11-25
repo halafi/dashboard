@@ -14,4 +14,4 @@ const InfoBox = ({ value, title }: Props) => (
   </div>
 );
 
-export default InfoBox;
+export default React.memo(InfoBox);

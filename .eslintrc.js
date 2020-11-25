@@ -51,8 +51,10 @@ module.exports = {
     ],
     'react/jsx-filename-extension': ['error', { extensions: ['.ts', '.tsx'] }],
     'no-unused-vars': 'off',
+    'no-undef': 'off', // suspecting it's not working well, opting out for '@typescript-eslint/no-unused-vars'
     // note you must disable the base rule as it can report incorrect errors
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+    '@typescript-eslint/no-unused-vars': ['warn'],
   },
 };

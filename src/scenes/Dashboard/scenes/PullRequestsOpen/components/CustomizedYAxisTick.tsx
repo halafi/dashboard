@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { formatHours } from '../../../../../services/utils';
 
 type Props = {
   x: number;

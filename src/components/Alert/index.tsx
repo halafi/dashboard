@@ -17,4 +17,4 @@ const Alert = ({ children }: Props) => (
   </div>
 );
 
-export default Alert;
+export default React.memo(Alert);

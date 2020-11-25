@@ -1,4 +1,4 @@
-import type { GroupedMetricValues, MetricValues } from '../../../services/api';
+import type { GroupedMetricValues } from '../../../services/api';
 
 type MappedData = { name: string; prOpened: number; fill: string };
 

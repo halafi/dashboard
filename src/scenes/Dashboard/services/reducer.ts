@@ -5,10 +5,6 @@ const SET_END_DATE = 'SET_END_DATE';
 const SET_ERROR = 'SET_ERROR';
 const SET_DATA = 'SET_DATA';
 const SET_TAB_INDEX = 'SET_TAB_INDEX';
-// const SET_LOADING = 'SET_LOADING';
-
-// TODO: move to global types
-type Nullable<T> = T | null;
 
 type SetStartDateAction = {
   type: typeof SET_START_DATE;
@@ -45,13 +41,6 @@ type SetTabIndexAction = {
   };
 };
 
-// type SetLoadingAction = {
-//   type: typeof SET_LOADING;
-//   payload: {
-//     loading: boolean;
-//   };
-// };
-
 export const setStartDate = (date: Nullable<Date>): SetStartDateAction => ({
   type: SET_START_DATE,
   payload: {
@@ -87,20 +76,12 @@ export const setTabIndex = (index: number): SetTabIndexAction => ({
   },
 });
 
-// export const setLoading = (loading: boolean): SetLoadingAction => ({
-//   type: SET_LOADING,
-//   payload: {
-//     loading,
-//   },
-// });
-
 export type DashboardActions =
   | SetStartDateAction
   | SetEndDateAction
   | SetErrorAction
   | SetTabIndexAction
   | SetDataAction;
-// | SetLoadingAction;
 
 export type State = {
   startDate: Nullable<Date>;
@@ -132,8 +113,11 @@ const minesweeperReducer = (oldState: State, action: DashboardActions): State =>
     case SET_DATA:
       return { ...oldState, data: action.payload.data, loading: false, error: null };
     case SET_TAB_INDEX:
-      return { ...oldState, tabIndex: action.payload.index, loading: true };
-    // case SET_LOADING: return { ...oldState, loading: action.payload.loading };
+      return {
+        ...oldState,
+        tabIndex: action.payload.index,
+        loading: Boolean(oldState.startDate && oldState.endDate),
+      };
     default:
       throw new Error();
   }
