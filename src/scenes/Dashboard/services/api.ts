@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { formatISO } from 'date-fns';
+import { mapperPrMetrics } from './mapper';
 
 export interface PrMetricsResponse {
   calculated: Calculated[];
@@ -15,19 +16,25 @@ export interface PrMetricsResponse {
 type Calculated = {
   for: For;
   granularity: string;
-  values: MetricValues[];
+  values: MetricValuesInput[];
 };
 
 type For = {
   repositories: string[];
 };
 
-export type MetricValues = {
+export type MetricValuesInput = {
   date: string;
   values: [string | null, number];
   confidence_scores?: number | undefined[];
   confidence_mins?: string | undefined[];
   confidence_maxs?: string | undefined[];
+};
+
+export type MetricValues = {
+  date: string;
+  prReviewTime: number | null; // in seconds
+  prOpened: number;
 };
 
 const API = 'https://api.athenian.co/v1/metrics/prs';
@@ -45,6 +52,7 @@ export const fetchPrMetrics = (startDate: Date, endDate: Date) =>
         for: [
           {
             repositories: REPOSITORIES,
+            repogroups: [[0], [1], [2], [3]],
           },
         ],
         metrics: ['pr-review-time', 'pr-opened'],
@@ -62,7 +70,7 @@ export const fetchPrMetrics = (startDate: Date, endDate: Date) =>
       .then((res) => res.json())
       .then((json) => {
         if (json.calculated && json.calculated[0]) {
-          resolve(json.calculated[0].values);
+          resolve(mapperPrMetrics(json.calculated[0].values));
         }
         resolve([]);
       })
