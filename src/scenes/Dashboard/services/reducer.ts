@@ -1,4 +1,4 @@
-import type { MetricValues } from './api';
+import type { GroupedMetricValues } from './api';
 
 const SET_START_DATE = 'SET_START_DATE';
 const SET_END_DATE = 'SET_END_DATE';
@@ -34,7 +34,7 @@ type SetErrorAction = {
 type SetDataAction = {
   type: typeof SET_DATA;
   payload: {
-    data: MetricValues[];
+    data: GroupedMetricValues[];
   };
 };
 
@@ -73,7 +73,7 @@ export const setError = (error: string): SetErrorAction => ({
   },
 });
 
-export const setData = (data: MetricValues[]): SetDataAction => ({
+export const setData = (data: GroupedMetricValues[]): SetDataAction => ({
   type: SET_DATA,
   payload: {
     data,
@@ -106,7 +106,7 @@ export type State = {
   startDate: Nullable<Date>;
   endDate: Nullable<Date>;
   error: Nullable<string>;
-  data: MetricValues[];
+  data: GroupedMetricValues[];
   tabIndex: number;
   loading: boolean;
 };
@@ -132,7 +132,7 @@ const minesweeperReducer = (oldState: State, action: DashboardActions): State =>
     case SET_DATA:
       return { ...oldState, data: action.payload.data, loading: false, error: null };
     case SET_TAB_INDEX:
-      return { ...oldState, tabIndex: action.payload.index };
+      return { ...oldState, tabIndex: action.payload.index, loading: true };
     // case SET_LOADING: return { ...oldState, loading: action.payload.loading };
     default:
       throw new Error();

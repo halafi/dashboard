@@ -22,7 +22,7 @@ const ReviewTime = ({ data }: Props) => (
         margin={{
           top: 10,
           right: 20,
-          bottom: 10,
+          bottom: 20,
           left: 0,
         }}
       >

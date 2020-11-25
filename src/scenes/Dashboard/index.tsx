@@ -28,20 +28,20 @@ const Dashboard = () => {
     error: null,
     loading: true,
     data: [],
-    tabIndex: 0,
+    tabIndex: 1,
   });
   const { startDate, endDate, error, data, tabIndex, loading } = state;
 
   useEffect(() => {
     if (startDate && endDate) {
-      // pull request metrics
-      fetchPrMetrics(startDate, endDate)
+      // TODO: response caching
+      fetchPrMetrics(startDate, endDate, tabIndex === 1)
         .then((json) => {
           dispatch(setData(json));
         })
         .catch((err) => dispatch(setError(err)));
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, tabIndex]);
 
   // TODO: memoization / re-renders
   return (
@@ -72,9 +72,10 @@ const Dashboard = () => {
       </div>
       <div className="flex justify-center">
         <TabNavigation
-          items={['Review Time', 'PRs Created']}
+          items={['Review Time', 'PRs Opened']}
           tabIndex={tabIndex}
           onTabChange={(newTabIndex) => dispatch(setTabIndex(newTabIndex))}
+          disabled={loading}
         />
       </div>
       <div className="container mx-auto border rounded-md p-4 bg-white">
@@ -84,8 +85,14 @@ const Dashboard = () => {
             <Spinner size={24} />
           </div>
         )}
-        {!loading && !error && (
-          <>{tabIndex === 0 ? <ReviewTime data={data} /> : <PullRequestsOpen data={data} />}</>
+        {!loading && !error && data.length && (
+          <>
+            {tabIndex === 0 ? (
+              <ReviewTime data={data[0].values} />
+            ) : (
+              <PullRequestsOpen data={data} />
+            )}
+          </>
         )}
       </div>
     </div>

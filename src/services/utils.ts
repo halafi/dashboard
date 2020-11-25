@@ -8,3 +8,8 @@ export const formatHours = (
   const hours = minutes / 60;
   return `${hours.toFixed(precision)}${units ? ' hours' : ''}`;
 };
+
+export const getRepositoryName = (input: string): string => {
+  const split = input.split('/');
+  return split[split.length - 1];
+};

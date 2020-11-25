@@ -37,6 +37,11 @@ export type MetricValues = {
   prOpened: number;
 };
 
+export type GroupedMetricValues = {
+  forRepositories: string[];
+  values: MetricValues[];
+};
+
 const API = 'https://api.athenian.co/v1/metrics/prs';
 const REPOSITORIES = [
   'github.com/athenianco/athenian-api',
@@ -45,14 +50,14 @@ const REPOSITORIES = [
   'github.com/athenianco/metadata',
 ];
 
-export const fetchPrMetrics = (startDate: Date, endDate: Date) =>
-  new Promise<MetricValues[]>((resolve, reject) =>
+export const fetchPrMetrics = (startDate: Date, endDate: Date, group: boolean = false) =>
+  new Promise<GroupedMetricValues[]>((resolve, reject) =>
     fetch(API, {
       body: JSON.stringify({
         for: [
           {
             repositories: REPOSITORIES,
-            repogroups: [[0], [1], [2], [3]],
+            repogroups: group ? [[0], [1], [2], [3]] : undefined,
           },
         ],
         metrics: ['pr-review-time', 'pr-opened'],
@@ -69,8 +74,13 @@ export const fetchPrMetrics = (startDate: Date, endDate: Date) =>
     })
       .then((res) => res.json())
       .then((json) => {
-        if (json.calculated && json.calculated[0]) {
-          resolve(mapperPrMetrics(json.calculated[0].values));
+        if (json.calculated && json.calculated.length) {
+          resolve(
+            json.calculated.map((repogroupData: Calculated) => ({
+              forRepositories: repogroupData.for.repositories,
+              values: mapperPrMetrics(repogroupData.values),
+            })),
+          );
         }
         resolve([]);
       })
