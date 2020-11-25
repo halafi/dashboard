@@ -1,8 +1,16 @@
 import React, { Reducer, useEffect, useReducer } from 'react';
 import DatePicker from 'react-datepicker';
 import { subMonths, formatISO } from 'date-fns';
+import classNames from 'classnames';
+
 import type { State, DashboardActions } from './services/reducer';
-import dashboardReducer, { setStartDate, setEndDate, setError, setData } from './services/reducer';
+import dashboardReducer, {
+  setStartDate,
+  setEndDate,
+  setError,
+  setData,
+  setTabIndex,
+} from './services/reducer';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -22,8 +30,9 @@ const Dashboard = () => {
     endDate: today,
     error: null,
     data: null,
+    tabIndex: 0,
   });
-  const { startDate, endDate, error, data } = state;
+  const { startDate, endDate, error, data, tabIndex } = state;
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -61,9 +70,9 @@ const Dashboard = () => {
   // TODO: mobile responsivness
   return (
     <div className="h-screen flex flex-col">
-      <div className="flex flex-row justify-center my-16">
+      <div className="flex flex-col sm:flex-row items-center justify-center my-16">
         <DatePicker
-          className="text-sm shadow-md rounded-md border border-gray-400 py-2 px-4 mr-1"
+          className="text-sm shadow-md rounded-md border border-gray-400 py-2 px-4 sm:mr-1"
           selected={startDate}
           placeholderText="start date"
           onChange={(date) => dispatch(setStartDate(date as Date))}
@@ -73,7 +82,7 @@ const Dashboard = () => {
           maxDate={endDate}
         />
         <DatePicker
-          className="text-sm shadow-md rounded-md border border-gray-400 py-2 px-4 ml-1"
+          className="text-sm shadow-md rounded-md border border-gray-400 py-2 px-4 sm:ml-1"
           selected={endDate}
           placeholderText="end date"
           onChange={(date) => dispatch(setEndDate(date as Date))}
@@ -82,6 +91,39 @@ const Dashboard = () => {
           endDate={endDate}
           minDate={startDate}
         />
+      </div>
+      <div className="flex justify-center">
+        <div>
+          <nav className="flex bg-white">
+            <button
+              onClick={() => dispatch(setTabIndex(0))}
+              type="button"
+              className={classNames(
+                'text-gray-600 py-2 px-5 block hover:text-blue-500 focus:outline-black',
+                {
+                  'border-blue-500 border-b-2 text-blue-500': tabIndex === 0,
+                },
+              )}
+            >
+              Review Time
+            </button>
+            <button
+              onClick={() => dispatch(setTabIndex(1))}
+              type="button"
+              className={classNames(
+                'text-gray-600 py-2 px-5 block hover:text-blue-500 focus:outline-black',
+                {
+                  'border-blue-500 border-b-2 text-blue-500': tabIndex === 1,
+                },
+              )}
+            >
+              PRs Created
+            </button>
+          </nav>
+        </div>
+      </div>
+      <div className="container mx-auto border rounded-md p-4 bg-white">
+        Some content in a border
       </div>
     </div>
   );

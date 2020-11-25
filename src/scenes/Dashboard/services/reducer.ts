@@ -2,6 +2,7 @@ const SET_START_DATE = 'SET_START_DATE';
 const SET_END_DATE = 'SET_END_DATE';
 const SET_ERROR = 'SET_ERROR';
 const SET_DATA = 'SET_DATA';
+const SET_TAB_INDEX = 'SET_TAB_INDEX';
 
 // TODO: move to global types
 type Nullable<T> = T | null;
@@ -34,6 +35,13 @@ type SetDataAction = {
   };
 };
 
+type SetTabIndexAction = {
+  type: typeof SET_TAB_INDEX;
+  payload: {
+    index: number;
+  };
+};
+
 export const setStartDate = (date: Nullable<Date>): SetStartDateAction => ({
   type: SET_START_DATE,
   payload: {
@@ -63,10 +71,18 @@ export const setData = (data: any): SetDataAction => ({
   },
 });
 
+export const setTabIndex = (index: number): SetTabIndexAction => ({
+  type: SET_TAB_INDEX,
+  payload: {
+    index,
+  },
+});
+
 export type DashboardActions =
   | SetStartDateAction
   | SetEndDateAction
   | SetErrorAction
+  | SetTabIndexAction
   | SetDataAction;
 
 export type State = {
@@ -74,6 +90,7 @@ export type State = {
   endDate: Nullable<Date>;
   error: Nullable<string>;
   data: Nullable<any>; // TODO: type
+  tabIndex: number;
 };
 
 const minesweeperReducer = (oldState: State, action: DashboardActions): State => {
@@ -86,6 +103,8 @@ const minesweeperReducer = (oldState: State, action: DashboardActions): State =>
       return { ...oldState, error: action.payload.error };
     case SET_DATA:
       return { ...oldState, data: action.payload.data };
+    case SET_TAB_INDEX:
+      return { ...oldState, tabIndex: action.payload.index };
     default:
       throw new Error();
   }
